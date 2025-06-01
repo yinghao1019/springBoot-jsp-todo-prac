@@ -3,7 +3,7 @@
 
 <div class="container">
     <div>
-        <a type="button" class="btn btn-primary btn-md" href="<c:url value="/add-todo">">Add Todo</a>
+        <a type="button" class="btn btn-primary btn-md" href="<c:url value='/add-todo'/>">Add Todo</a>
     </div>
     <br>
     <div class="panel panel-primary">
@@ -25,21 +25,19 @@
                         <td>${todo.description}</td>
                         <td><fmt:formatDate value="${todo.targetDate}"
                                             pattern="dd/MM/yyyy"/></td>
-                        <td><a type="button" class="btn btn-success">
-                            <c:url value="/update-todo">
-                                <c:param name="id"
-                                         value="${todo.id}"/>
-                                Update
-                            </c:url>
+                        <td><a type="button" href="<c:url value='/update-todo'>
+                                    <c:param name='id'
+                                             value='${todo.id}'/>
+                                </c:url>" class="btn btn-success">
+                            Update
                         </a>
-                            <a type="button" class="btn btn-warning">
-                                <c:url value="/delete-todo">
-                                    <c:param name="id"
-                                             value="${todo.id}"/>
+                            <a type="button" class="btn btn-warning"
+                               href="<c:url value='/delete-todo'>
+                                    <c:param name='id'
+                                             value='${todo.id}'/>
+                                </c:url>">
                                 Delete
-                                </c:url>
-                            </a>
-                        </td>
+                            </a></td>
                     </tr>
                 </c:forEach>
                 </tbody>
