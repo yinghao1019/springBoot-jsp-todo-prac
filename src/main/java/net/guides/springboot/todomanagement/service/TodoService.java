@@ -1,15 +1,15 @@
 package net.guides.springboot.todomanagement.service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import net.guides.springboot.todomanagement.model.Todo;
 import net.guides.springboot.todomanagement.repository.TodoRepository;
+
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +19,7 @@ public class TodoService implements ITodoService {
 
     @Override
     public List<Todo> getTodosByUser(String user) {
-        return todoRepository.findByUserName(user);
+        return todoRepository.findByUserNameOrderByTargetDateDesc(user);
     }
 
     @Override
@@ -44,9 +44,7 @@ public class TodoService implements ITodoService {
     @Override
     public void deleteTodo(long id) {
         Optional<Todo> todo = todoRepository.findById(id);
-        if (todo.isPresent()) {
-            todoRepository.delete(todo.get());
-        }
+        todo.ifPresent(todoRepository::delete);
     }
 
     @Override
