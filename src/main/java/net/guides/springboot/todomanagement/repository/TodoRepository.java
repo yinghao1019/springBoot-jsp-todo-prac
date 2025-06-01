@@ -1,13 +1,13 @@
 package net.guides.springboot.todomanagement.repository;
 
-import java.util.List;
+import net.guides.springboot.todomanagement.model.Todo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import net.guides.springboot.todomanagement.model.Todo;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface TodoRepository extends JpaRepository<Todo, Long>{
-	List<Todo> findByUserName(String user);
+    List<Todo> findByUserNameOrderByTargetDateDesc(String user);
 }
