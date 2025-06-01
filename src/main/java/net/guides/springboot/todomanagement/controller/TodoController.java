@@ -5,6 +5,9 @@ import java.util.Date;
 
 import javax.validation.Valid;
 
+import lombok.RequiredArgsConstructor;
+import net.guides.springboot.todomanagement.service.ITodoService;
+import net.guides.springboot.todomanagement.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,13 +22,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import net.guides.springboot.todomanagement.model.Todo;
-import net.guides.springboot.todomanagement.service.ITodoService;
 
 @Controller
+@RequiredArgsConstructor
 public class TodoController {
-
-	@Autowired
-	private ITodoService todoService;
+	private final TodoService todoService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
