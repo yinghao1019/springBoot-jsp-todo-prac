@@ -5,6 +5,12 @@
     <div>
         <a type="button" class="btn btn-primary btn-md" href="<c:url value='/add-todo'/>">Add Todo</a>
     </div>
+    <form action="<c:url value='/excel/import'/> " method="post" enctype="multipart/form-data">
+        <h2>匯入 Excel 檔案</h2>
+        <input type="file" name="file" accept=".xls,.xlsx" required/>
+        <button type="submit">上傳</button>
+    </form>
+
     <br>
     <div class="panel panel-primary">
         <div class="panel-heading">
@@ -44,6 +50,5 @@
             </table>
         </div>
     </div>
-
 </div>
 <%@ include file="common/footer.jspf" %>

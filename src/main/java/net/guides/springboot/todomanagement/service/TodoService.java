@@ -6,6 +6,7 @@ import net.guides.springboot.todomanagement.model.Todo;
 import net.guides.springboot.todomanagement.repository.TodoRepository;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -50,5 +51,11 @@ public class TodoService implements ITodoService {
     @Override
     public void saveTodo(Todo todo) {
         todoRepository.save(todo);
+    }
+
+    @Override
+    @Transactional
+    public void saveTodoList(List<Todo> todo) {
+        todoRepository.saveAll(todo);
     }
 }

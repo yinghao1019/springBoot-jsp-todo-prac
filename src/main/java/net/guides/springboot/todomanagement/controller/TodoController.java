@@ -1,13 +1,13 @@
 package net.guides.springboot.todomanagement.controller;
 
+import static net.guides.springboot.todomanagement.utils.LoginUtils.getLoggedInUserName;
+
 import lombok.RequiredArgsConstructor;
 
 import net.guides.springboot.todomanagement.model.Todo;
 import net.guides.springboot.todomanagement.service.TodoService;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -32,19 +32,9 @@ public class TodoController {
 
     @GetMapping(value = "/list-todos")
     public String showTodos(ModelMap model) {
-        String name = getLoggedInUserName(model);
+        String name = getLoggedInUserName();
         model.put("todos", todoService.getTodosByUser(name));
         return "list-todos";
-    }
-
-    private String getLoggedInUserName(ModelMap model) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (principal instanceof UserDetails) {
-            return ((UserDetails) principal).getUsername();
-        }
-
-        return principal.toString();
     }
 
     @GetMapping(value = "/add-todo")
@@ -53,7 +43,7 @@ public class TodoController {
         return "todo";
     }
 
-    @PostMapping(value = "/delete-todo")
+    @GetMapping(value = "/delete-todo")
     public String deleteTodo(@RequestParam long id) {
         todoService.deleteTodo(id);
         return "redirect:/list-todos";
@@ -67,25 +57,24 @@ public class TodoController {
     }
 
     @PostMapping(value = "/update-todo")
-    public String updateTodo(ModelMap model, @Valid Todo todo, BindingResult result) {
-
+    public String updateTodo(@Valid Todo todo, BindingResult result) {
         if (result.hasErrors()) {
             return "todo";
         }
 
-        todo.setUserName(getLoggedInUserName(model));
+        todo.setUserName(getLoggedInUserName());
         todoService.updateTodo(todo);
         return "redirect:/list-todos";
     }
 
     @PostMapping(value = "/add-todo")
-    public String addTodo(ModelMap model, @Valid Todo todo, BindingResult result) {
+    public String addTodo(@Valid Todo todo, BindingResult result) {
 
         if (result.hasErrors()) {
             return "todo";
         }
 
-        todo.setUserName(getLoggedInUserName(model));
+        todo.setUserName(getLoggedInUserName());
         todoService.saveTodo(todo);
         return "redirect:/list-todos";
     }
