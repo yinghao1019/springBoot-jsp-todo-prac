@@ -10,7 +10,7 @@
         <input type="file" name="file" accept=".xls,.xlsx" required/>
         <button type="submit">上傳</button>
     </form>
-
+    <button onclick="exportExcel()">匯出 Excel</button>
     <br>
     <div class="panel panel-primary">
         <div class="panel-heading">

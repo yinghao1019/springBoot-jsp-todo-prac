@@ -7,7 +7,11 @@
 		format : 'dd/mm/yyyy'
 	});
 </script>
-
+<script>
+	function exportExcel() {
+		window.location.href = "<c:url value='/excel/export' />";
+	}
+</script>
 
 <div class="footer">
 	Fixed Footer

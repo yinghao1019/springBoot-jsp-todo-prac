@@ -3,6 +3,7 @@ package net.guides.springboot.todomanagement.service;
 import lombok.RequiredArgsConstructor;
 
 import net.guides.springboot.todomanagement.model.Todo;
+import net.guides.springboot.todomanagement.repository.TodoRepository;
 import net.guides.springboot.todomanagement.utils.LoginUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -17,9 +18,35 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 @Service
 @RequiredArgsConstructor
 public class ExcelService {
+    private final TodoRepository todoRepository;
+
+    public void exportExcel(HttpServletResponse response) throws IOException {
+        List<Todo> todos =
+                todoRepository.findByUserNameOrderByTargetDateDesc(
+                        LoginUtils.getLoggedInUserName());
+        // 建立 Excel 檔
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("資料表");
+
+        // 標題列
+        Row header = sheet.createRow(0);
+        header.createCell(0).setCellValue("描述");
+        header.createCell(1).setCellValue("日期");
+
+        int rowNum = 1;
+        for (Todo todo : todos) {
+            Row row = sheet.createRow(rowNum);
+            row.createCell(0, CellType.STRING).setCellValue(todo.getDescription());
+            row.createCell(1).setCellValue(todo.getTargetDate());
+        }
+        workbook.write(response.getOutputStream());
+        workbook.close();
+    }
 
     public List<Todo> readExcel(MultipartFile file) throws IOException {
         List<Todo> todos = new ArrayList<>();
